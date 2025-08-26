@@ -3,6 +3,10 @@ import type { CommentResponse, IComment } from "~/types/comment";
 import type { IPost } from "~/types/post";
 import type { UserResponse } from "~/types/user";
 
+definePageMeta({
+  middleware: "auth",
+});
+
 const route = useRoute();
 
 const { data: postsRef } = useNuxtData<IPost[]>("posts");

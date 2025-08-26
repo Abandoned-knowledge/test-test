@@ -2,6 +2,10 @@
 import type { IPost, PostResponse } from "~/types/post";
 import type { UserResponse } from "~/types/user";
 
+definePageMeta({
+  middleware: "auth",
+});
+
 const { data: posts } = await useAsyncData("posts", async () => {
   const [postsResponse, usersResponse] = await Promise.all([
     $fetch<{ posts: PostResponse[] }>(
