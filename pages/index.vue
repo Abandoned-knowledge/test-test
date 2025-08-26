@@ -6,37 +6,45 @@ definePageMeta({
   middleware: "auth",
 });
 
-const { data: posts } = await useAsyncData("posts", async () => {
-  const [postsResponse, usersResponse] = await Promise.all([
-    $fetch<{ posts: PostResponse[] }>(
-      "https://dummyjson.com/posts?select=id,title,body,reactions,views,userId,tags"
-    ),
-    $fetch<{ users: UserResponse[] }>(
-      "https://dummyjson.com/users?limit=208&select=id,firstName,lastName,image,email"
-    ),
-  ]);
+const { data: posts } = await useAsyncData(
+  "posts",
+  async () => {
+    const [postsResponse, usersResponse] = await Promise.all([
+      $fetch<{ posts: PostResponse[] }>(
+        "https://dummyjson.com/posts?select=id,title,body,reactions,views,userId,tags"
+      ),
+      $fetch<{ users: UserResponse[] }>(
+        "https://dummyjson.com/users?limit=208&select=id,firstName,lastName,image,email"
+      ),
+    ]);
 
-  const result: IPost[] = postsResponse.posts.map((post) => {
-    const user = usersResponse.users.find((user) => user.id === post.userId);
+    const result: IPost[] = postsResponse.posts.map((post) => {
+      const user = usersResponse.users.find((user) => user.id === post.userId);
 
-    return {
-      id: post.id,
-      title: post.title,
-      body: post.body,
-      reactions: post.reactions,
-      views: post.views,
-      tags: post.tags,
-      user: user
-        ? {
-            name: `${user.firstName} ${user.lastName}`,
-            image: user.image,
-          }
-        : null,
-    };
-  });
+      return {
+        id: post.id,
+        title: post.title,
+        body: post.body,
+        reactions: post.reactions,
+        views: post.views,
+        tags: post.tags,
+        user: user
+          ? {
+              name: `${user.firstName} ${user.lastName}`,
+              image: user.image,
+            }
+          : null,
+      };
+    });
 
-  return result;
-});
+    return result;
+  },
+  {
+    getCachedData(key, nuxtApp, context) {
+      return nuxtApp.payload.data[key];
+    },
+  }
+);
 
 const page = ref(1);
 const ITEMS_PER_PAGE = 6;

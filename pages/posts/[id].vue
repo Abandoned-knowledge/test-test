@@ -15,30 +15,38 @@ const post = computed(() =>
   postsRef.value?.find((post) => post.id === Number(route.params.id))
 );
 
-const { data: comments } = await useAsyncData("comments", async () => {
-  const [commentsResponse, usersResponse] = await Promise.all([
-    $fetch<{ comments: CommentResponse[] }>(
-      `https://dummyjson.com/posts/${route.params.id}/comments?select=id,body,user`
-    ),
-    $fetch<{ users: UserResponse[] }>(
-      "https://dummyjson.com/users?limit=208&select=id,firstName,lastName,image,email"
-    ),
-  ]);
+const { data: comments } = await useAsyncData(
+  `post-comment-${route.params.id}`,
+  async () => {
+    const [commentsResponse, usersResponse] = await Promise.all([
+      $fetch<{ comments: CommentResponse[] }>(
+        `https://dummyjson.com/posts/${route.params.id}/comments?select=id,body,user`
+      ),
+      $fetch<{ users: UserResponse[] }>(
+        "https://dummyjson.com/users?limit=208&select=id,firstName,lastName,image,email"
+      ),
+    ]);
 
-  const result: IComment[] = commentsResponse.comments.map((comment) => {
-    const user = usersResponse.users.find(
-      (user) => user.id === comment.user?.id
-    ) as UserResponse;
+    const result: IComment[] = commentsResponse.comments.map((comment) => {
+      const user = usersResponse.users.find(
+        (user) => user.id === comment.user?.id
+      ) as UserResponse;
 
-    return {
-      id: comment.id,
-      body: comment.body,
-      user: user,
-    };
-  });
+      return {
+        id: comment.id,
+        body: comment.body,
+        user: user,
+      };
+    });
 
-  return result;
-});
+    return result;
+  },
+  {
+    getCachedData(key, nuxtApp, context) {
+      return nuxtApp.payload.data[key];
+    },
+  }
+);
 </script>
 
 <template>
