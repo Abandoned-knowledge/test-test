@@ -9,10 +9,10 @@ const { post } = defineProps<{ post: IPost }>();
   <li>
     <NuxtLink :to="`/posts/${post.id}`">
       <article
-        class="bg-gray-700 rounded-xl overflow-hidden grid grid-cols-2 text-center cursor-pointer hover:scale-105 transition pt-5 h-full gap-5"
+        class="bg-gray-700 rounded-xl overflow-hidden grid grid-cols-2 text-center cursor-pointer hover:scale-105 transition pt-5 h-full gap-5 grid-rows-[1fr_auto_auto]"
       >
         <div class="flex flex-col items-center col-span-2">
-          <img :src="post.user?.image" alt="" class="aspect-square" />
+          <img :src="post.user?.image" alt="" class="h-1 grow aspect-square" />
           <h2 class="font-bold col-span-2 text-xl">
             {{ post.user?.name }}
           </h2>
@@ -28,9 +28,9 @@ const { post } = defineProps<{ post: IPost }>();
         </p>
 
         <footer
-          class="flex flex-col items-center justify-center bg-gray-600 col-span-2 py-2"
+          class="flex flex-col h-fit items-center justify-center bg-gray-600 col-span-2"
         >
-          <p class="font-bold">
+          <p>
             {{ post.title }}
           </p>
 
