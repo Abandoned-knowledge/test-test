@@ -43,9 +43,9 @@ const { data: comments } = await useAsyncData("comments", async () => {
 
 <template>
   <section class="w-11/12 md:w-1/3 mx-auto">
-    <h1 class="text-3xl font-bold uppercase text-center">Пост</h1>
+    <h1 class="text-4xl font-bold uppercase text-center">Пост</h1>
 
-    <article class="bg-gray-800 mx-auto mt-10 rounded-xl overflow-hidden">
+    <article class="bg-gray-800 mx-auto mt-5 rounded-xl overflow-hidden">
       <div class="p-4 grid grid-cols-2 gap-4">
         <h3 class="text-xl col-span-2">{{ post?.title }}</h3>
         <p class="col-span-2">{{ post?.body }}</p>

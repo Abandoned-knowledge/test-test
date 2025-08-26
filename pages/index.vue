@@ -50,7 +50,7 @@ const visiblePosts = computed(() =>
 
 <template>
   <section class="container mx-auto flex flex-col items-center gap-10">
-    <h1 class="text-4xl font-bold uppercase">posts</h1>
+    <h1 class="text-4xl font-bold uppercase">Посты</h1>
 
     <ul class="grid md:grid-cols-3 gap-5 auto-rows-[300px] w-full">
       <Post v-for="post in visiblePosts" :key="post.id" :post="post" />
